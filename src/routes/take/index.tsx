@@ -45,7 +45,10 @@ export default component$(() => {
   })
 
   const print = $(async () => {
+    console.log('redirect stat');
     await nav('/');
+
+    console.log('redirect end');
   })
     
 
