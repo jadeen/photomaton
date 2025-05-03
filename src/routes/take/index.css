@@ -22,6 +22,11 @@
   flex-direction: column;
 }
 
+.preview-image {
+  border-radius: 8px;
+  margin-right: 8px;
+}
+
 .spot {
   position: relative;
   border: 1px solid black;

@@ -1,5 +1,5 @@
 import { useStyles$, component$, useSignal, $ } from "@builder.io/qwik";
-import { server$ } from '@builder.io/qwik-city';
+import { server$, useNavigate } from '@builder.io/qwik-city';
 import type { DocumentHead } from "@builder.io/qwik-city";
 import styles from './index.css?inline';
 
@@ -18,6 +18,7 @@ export const takePitcture = server$(async (date: string) => {
 
 export default component$(() => {
   useStyles$(styles);
+  const nav = useNavigate();
 
   const photo = useSignal<string[]>([]);
 
@@ -43,6 +44,11 @@ export default component$(() => {
     }, 1e3)
   })
 
+  const print = $(() => {
+    nav('/');
+  })
+    
+
   const nextPhoto = $(() => {
     photo.value = [...photo.value, currentPhoto.value as string];
 
@@ -51,15 +57,15 @@ export default component$(() => {
 
   if (photo.value.length === 4) {
     return (
-      <>
-      <p>Vos Photos</p>
-      <div class="photos">
-          {photo.value.map((p) => (
-            <img src={p} alt={p} key={p} height={108} width={192} />
-          ))}
-      </div>
-      <button type="button">Print</button>
-      </>
+      <section class="take">
+        <p>Vos Photos</p>
+        <div class="photos">
+            {photo.value.map((p) => (
+              <img src={p} alt={p} key={p} height={108} width={192} />
+            ))}
+        </div>
+        <button type="button" onClick$={() => print()}>Print</button>
+      </section>
     )
   }
 
@@ -75,7 +81,7 @@ export default component$(() => {
           ) : (
             <>
               <button type="button" onClick$={() => trigger()} class="space">Reprendre</button>
-              <button type="button" onClick$={() => nextPhoto()}>Prendre photo suivante</button>
+              <button type="button" onClick$={() => nextPhoto()}>Prendre la photo suivante</button>
             </>
           )
         }
@@ -86,10 +92,10 @@ export default component$(() => {
 
         <div class="photos">
           {photo.value.map((p) => (
-            <img src={p} alt={p} key={p} height={108} width={192} />
+            <img class="preview-image" src={p} alt={p} key={p} height={108} width={192} />
           ))}
 
-          {new Array(maxPhoto - photo.value.length).fill(0).map((_, i) => (<div class="empty" key={`p${i}`}>Photo {photo.value.length + i}</div>))}
+          {new Array(maxPhoto - photo.value.length).fill(0).map((_, i) => (<div class="empty" key={`p${i}`}>Photo {photo.value.length + i + 1}</div>))}
         </div>
       </div>
     </section>);
