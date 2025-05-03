@@ -7,14 +7,10 @@ import styles from './index.css?inline';
 import { exec } from 'node:child_process';
 
 
-export const takePitcture = server$((date: string) => {
+export const takePitcture = server$(async (date: string) => {
   const path = `${process.cwd()}/public/photos/${date}.jpg`.replace('/home/patatenouille', '~');
   console.log(`take picture => ${path}`);
-  exec(`rpicam-still -o ${path} --width 1920 --height 1080 --flush --immediate -n`, (error, stdout, stderr) => {
-    console.log(error, stdout, stderr);
-    console.log('finish');
-  });
-  console.log('end process');
+  await exec(`rpicam-still -o ${path} --width 1920 --height 1080 --flush --immediate -n`);
   return `${date}.jpg`;
 });
 
