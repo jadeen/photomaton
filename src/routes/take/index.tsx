@@ -44,8 +44,8 @@ export default component$(() => {
     }, 1e3)
   })
 
-  const print = $(() => {
-    nav('/');
+  const print = $(async () => {
+    await nav('/');
   })
     
 
