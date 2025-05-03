@@ -3,14 +3,16 @@ import { server$ } from '@builder.io/qwik-city';
 import type { DocumentHead } from "@builder.io/qwik-city";
 import styles from './index.css?inline';
 
+import util from 'util';
+import { exec as syncExec } from 'node:child_process';
 
-import { exec } from 'node:child_process';
-
+const exec = util.promisify(syncExec);
 
 export const takePitcture = server$(async (date: string) => {
   const path = `${process.cwd()}/public/photos/${date}.jpg`.replace('/home/patatenouille', '~');
   console.log(`take picture => ${path}`);
-  await exec(`rpicam-still -o ${path} --width 1920 --height 1080 --flush --immediate -n`);
+  const { stdout } = await exec(`rpicam-still -o ${path} --width 1920 --height 1080 --flush --immediate -n`);
+  console.log(stdout);
   return `${date}.jpg`;
 });
 
@@ -35,6 +37,7 @@ export default component$(() => {
         clearInterval(interval);
         const time = new Date();
         await takePitcture(time.toISOString())
+	console.log('okay finish');
         currentPhoto.value = `/photos/${time.toISOString()}.jpg`;
       }
     }, 1e3)
@@ -64,7 +67,7 @@ export default component$(() => {
     <section class="take">
       <div class="spot">
         {time.value !== -1 && <p class="conteur">{time.value}</p>}
-        {currentPhoto.value && <p>Prendre une photo</p>}
+        {currentPhoto.value && (<img src={currentPhoto.value} alt="last take"/>)}
         {
           !currentPhoto.value ? time.value === -1 && (
             <button type="button" onClick$={() => trigger()}>Demarrer</button>
