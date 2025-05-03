@@ -23,7 +23,7 @@ export default component$(() => {
 
   const time = useSignal(-1);
 
-  const currentPhoto = useSignal<string | null>(null);
+  const currentPhoto = useSignal<string | null>();
 
   const maxPhoto = 4;
 
@@ -66,8 +66,9 @@ export default component$(() => {
   return (
     <section class="take">
       <div class="spot">
+        {currentPhoto.value && (<img src={currentPhoto.value} alt="last take" height={432} width={768}/>)}
+        <div class="content">
         {time.value !== -1 && <p class="conteur">{time.value}</p>}
-        {currentPhoto.value && (<img src={currentPhoto.value} alt="last take"/>)}
         {
           !currentPhoto.value ? time.value === -1 && (
             <button type="button" onClick$={() => trigger()}>Demarrer</button>
@@ -78,6 +79,7 @@ export default component$(() => {
             </>
           )
         }
+        </div>
       </div>
       <div>
         <h2>Voici votre photo ({photo.value.length}/4)</h2>

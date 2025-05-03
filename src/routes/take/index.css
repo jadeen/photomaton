@@ -23,11 +23,34 @@
 }
 
 .spot {
+  position: relative;
   border: 1px solid black;
   width: 768px;
   height: 432px;
   border-radius: 8px;
   margin-top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+button {
+  background: white;
+  border: 1px solid black;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.spot img {
+  z-index: 0;
+  position: absolute;
+}
+
+.spot .content {
+  z-index: 1;
+  width: 768px;
+  height: 432px;
   display: flex;
   align-items: center;
   justify-content: center;
