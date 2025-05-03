@@ -8,11 +8,13 @@ import { exec } from 'node:child_process';
 
 
 export const takePitcture = server$((date: string) => {
-  const path = `${process.cwd()}/public/photos/${date}.jpg`;
+  const path = `${process.cwd()}/public/photos/${date}.jpg`.replace('/home/patatenouille', '~');
   console.log(`take picture => ${path}`);
-  exec('echo "The \\$HOME variable is $HOME"', (error, stdout, stderr) => {
+  exec(`rpicam-still -o ${path} --width 1920 --height 1080 --flush --immediate -n`, (error, stdout, stderr) => {
     console.log(error, stdout, stderr);
+    console.log('finish');
   });
+  console.log('end process');
   return `${date}.jpg`;
 });
 
@@ -37,7 +39,7 @@ export default component$(() => {
         clearInterval(interval);
         const time = new Date();
         await takePitcture(time.toISOString())
-        currentPhoto.value = `photos/${time.toISOString()}.jpg`;
+        currentPhoto.value = `/photos/${time.toISOString()}.jpg`;
       }
     }, 1e3)
   })
