@@ -1,0 +1,16 @@
+.container {
+  width: calc(100vw);
+  height: calc(100vh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+p {
+  font-size: 2em;
+}
