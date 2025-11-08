@@ -8,7 +8,7 @@ export default component$(() => {
   return (
     <div class="container">
       <h1>Photomaton</h1>
-      <p>Créer vous un souvenir de cette évènement</p>
+      <p>Créer vous un souvenir de cet évènement</p>
       <a href="/take">Démarrer</a>
     </div>
   );

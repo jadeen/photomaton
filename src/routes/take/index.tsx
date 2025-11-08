@@ -16,6 +16,15 @@ export const takePitcture = server$(async (date: string) => {
   return `${date}.jpg`;
 });
 
+export const printPicture = server$(async (image) => {
+  const path = `${process.cwd()}/public/${image}`.replace('/home/patatenouille', '~');
+  const pdf_path = path.replace('.jpg', '.pdf');
+  await exec(`convert ${path} -auto-orient ${pdf_path}`);
+  await exec(`lp -d 'Envy-6100e' ${path}`);
+
+  return true;
+});
+
 export default component$(() => {
   useStyles$(styles);
   const nav = useNavigate();
@@ -28,7 +37,7 @@ export default component$(() => {
 
   const trigger = $(() => {
     currentPhoto.value = null;
-    time.value = 5;
+    time.value = 3;
     hideButton.value = true;
 
     const interval = setInterval(async () => {
@@ -46,6 +55,9 @@ export default component$(() => {
 
   const print = $(async () => {
     console.log('redirect stat');
+    
+    await printPicture(currentPhoto.value)
+
     await nav('/');
 
     console.log('redirect end');
@@ -61,14 +73,13 @@ export default component$(() => {
 
         {!hideButton.value && currentPhoto.value &&  (<>
           <button type="button" onClick$={() => trigger()}>Prendre une nouvelle photo</button>
-          <a href="/">Terminé</a>
+          <button type="button" onClick$={() => print()}>Print</button>
           </>
           )}
         </div>
       </div>
     </section>);
 });
-
 
 export const head: DocumentHead = {
   title: "Take page",
